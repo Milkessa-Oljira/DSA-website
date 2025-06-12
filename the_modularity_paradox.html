@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modularity, Intelligence & the Path to AGI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            background: radial-gradient(ellipse at center, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #4a90e2, #50e3c2, #b3a6ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.5)); }
+            to { filter: drop-shadow(0 0 30px rgba(80, 227, 194, 0.5)); }
+        }
+
+        .section {
+            margin: 80px 0;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #50e3c2;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #50e3c2, #4a90e2);
+            border-radius: 2px;
+        }
+
+        .interactive-demo {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid rgba(74, 144, 226, 0.2);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: rgba(74, 144, 226, 0.2);
+            font-weight: bold;
+            color: #50e3c2;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(80, 227, 194, 0.1);
+        }
+
+        .visualization {
+            width: 100%;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(74, 144, 226, 0.2);
+        }
+
+        .node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .human-node {
+            background: radial-gradient(circle, #50e3c2, #4a90e2);
+            box-shadow: 0 0 20px rgba(80, 227, 194, 0.5);
+        }
+
+        .ai-node {
+            background: radial-gradient(circle, #ff6b6b, #ff8e53);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .toggle-button {
+            background: linear-gradient(45deg, #4a90e2, #50e3c2);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .toggle-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .dynamic-content {
+            min-height: 200px;
+            transition: all 0.5s ease;
+        }
+
+        .brain-visualization {
+            width: 100%;
+            height: 300px;
+            background: radial-gradient(ellipse at center, rgba(80, 227, 194, 0.1), transparent);
+            border-radius: 50%;
+            position: relative;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .neural-pathway {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(180deg, transparent, #50e3c2, transparent);
+            animation: neural-flow 3s infinite;
+        }
+
+        @keyframes neural-flow {
+            0% { opacity: 0; transform: translateY(-20px); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(20px); }
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(80, 227, 194, 0.1));
+            border: 2px solid rgba(80, 227, 194, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(80, 227, 194, 0.2);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4a90e2, #50e3c2);
+            transition: width 1s ease;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; }
+            .section { padding: 20px; margin: 40px 0; }
+            .section h2 { font-size: 2em; }
+            .container { padding: 10px; }
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(80, 227, 194, 0.6);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="hero">
+            <h1>The Modularity Paradox</h1>
+            <p style="font-size: 1.3em; margin-top: 20px; opacity: 0.8;">
+                Exploring why human intelligence emerges from non-modular computation<br>
+                while AI remains trapped in modular thinking
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>🧠 The Core Hypothesis</h2>
+            <div class="interactive-demo">
+                <p style="font-size: 1.2em; line-height: 1.6; margin-bottom: 20px;">
+                    Human intelligence operates on a fascinating paradox: our underlying neural computation is 
+                    <strong style="color: #50e3c2;">completely non-modular</strong>, yet we interpret and express 
+                    our thoughts in <strong style="color: #4a90e2;">modular ways</strong> (language, concepts, plans).
+                </p>
+                <div class="brain-visualization" id="brainViz">
+                    <div class="neural-pathway" style="left: 20%; animation-delay: 0s;"></div>
+                    <div class="neural-pathway" style="left: 40%; animation-delay: 0.5s;"></div>
+                    <div class="neural-pathway" style="left: 60%; animation-delay: 1s;"></div>
+                    <div class="neural-pathway" style="left: 80%; animation-delay: 1.5s;"></div>
+                </div>
+                <p style="font-size: 1.1em; opacity: 0.9;">
+                    Meanwhile, current AI systems are built on modular computation (linear algebra, discrete layers) 
+                    and produce modular outputs. This fundamental mismatch may be why we don't have AGI yet.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 Human vs AI Intelligence Architecture</h2>
+            <div class="visualization" id="comparisonViz">
+                <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: #50e3c2; font-weight: bold;">Click nodes to explore</div>
+            </div>
+            <button class="toggle-button" onclick="toggleVisualization()">Switch View</button>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>Aspect</th>
+                    <th>Human Intelligence</th>
+                    <th>Current AI</th>
+                </tr>
+                <tr>
+                    <td><strong>Computation Layer</strong></td>
+                    <td>Non-modular, entangled, continuous</td>
+                    <td>Modular, tensor-based, discrete</td>
+                </tr>
+                <tr>
+                    <td><strong>Information Processing</strong></td>
+                    <td>Holistic, context-sensitive dynamics</td>
+                    <td>Layer-wise, feed-forward steps</td>
+                </tr>
+                <tr>
+                    <td><strong>Learning</strong></td>
+                    <td>Developmental, embodied, continuous</td>
+                    <td>Batch training, then deployment</td>
+                </tr>
+                <tr>
+                    <td><strong>Representation</strong></td>
+                    <td>Emergent symbols grounded in experience</td>
+                    <td>Pre-defined tokens and embeddings</td>
+                </tr>
+                <tr>
+                    <td><strong>Adaptability</strong></td>
+                    <td>Self-modifying, plastic architecture</td>
+                    <td>Fixed architecture, parameter updates</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🚫 Why Modularity Breaks Down in Physical Reality</h2>
+            <div class="interactive-demo">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
+                    <div class="solution-card">
+                        <h3 style="color: #ff6b6b; margin-bottom: 15px;">❌ No True Isolation</h3>
+                        <p>Every system is embedded in its environment. Quantum entanglement shows particles can be instantly correlated across vast distances, violating modular independence.</p>
+                    </div>
+                    <div class="solution-card">
+                        <h3 style="color: #ff6b6b; margin-bottom: 15px;">❌ Interconnected Emergence</h3>
+                        <p>Complex phenomena like consciousness and weather emerge from interdependence. You can't study one module and predict everything.</p>
+                    </div>
+                    <div class="solution-card">
+                        <h3 style="color: #ff6b6b; margin-bottom: 15px;">❌ Observer Entanglement</h3>
+                        <p>In quantum mechanics, the observer cannot be cleanly separated from the observed. Measurement fundamentally disturbs the system.</p>
+                    </div>
+                </div>
+                <p style="text-align: center; font-style: italic; margin-top: 30px; color: #50e3c2;">
+                    Modularity is an <strong>epistemic convenience</strong>, not an <strong>ontological truth</strong>.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💡 The Revolutionary Solution</h2>
+            <div class="interactive-demo">
+                <p style="font-size: 1.3em; margin-bottom: 30px; text-align: center; color: #50e3c2;">
+                    Instead of predefining modules, let the AI construct and refine them through experience
+                </p>
+                
+                <div class="solution-card" style="background: linear-gradient(135deg, rgba(80, 227, 194, 0.2), rgba(74, 144, 226, 0.2));">
+                    <h3 style="color: #50e3c2; margin-bottom: 20px;">🌱 Start from Emptiness</h3>
+                    <p style="margin-bottom: 15px;">Like a child learning to move and speak, the AI begins with no predefined:</p>
+                    <ul style="margin-left: 20px; line-height: 1.6;">
+                        <li>Tokenization schemes</li>
+                        <li>Action spaces</li>
+                        <li>Category structures</li>
+                        <li>Representation formats</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 style="color: #4a90e2; margin-bottom: 20px;">🔄 Dynamic Modulation</h3>
+                    <p>Through interaction with reality, the system learns to:</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div style="background: rgba(74, 144, 226, 0.1); padding: 15px; border-radius: 8px;">
+                            <strong>Formulate</strong><br>New patterns and structures
+                        </div>
+                        <div style="background: rgba(80, 227, 194, 0.1); padding: 15px; border-radius: 8px;">
+                            <strong>Add</strong><br>Useful modulations
+                        </div>
+                        <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 8px;">
+                            <strong>Delete</strong><br>Ineffective patterns
+                        </div>
+                        <div style="background: rgba(179, 166, 255, 0.1); padding: 15px; border-radius: 8px;">
+                            <strong>Refine</strong><br>Existing modulations
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-card">
+                    <h3 style="color: #b3a6ff; margin-bottom: 20px;">🎯 Grounded Learning</h3>
+                    <p>Just as children build intuition through random babbling and movement, the AI develops its action space and conceptual framework through embodied experience, not predetermined categories.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Development Progress Simulation</h2>
+            <div class="interactive-demo">
+                <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+                    <button class="toggle-button" onclick="simulateProgress()">▶ Simulate Development</button>
+                    <button class="toggle-button" onclick="resetProgress()">🔄 Reset</button>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div>
+                        <h4 style="color: #50e3c2; margin-bottom: 10px;">Motor Control</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="motorProgress" style="width: 0%;"></div>
+                        </div>
+                        <span id="motorText">Random movements</span>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #4a90e2; margin-bottom: 10px;">Language</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="languageProgress" style="width: 0%;"></div>
+                        </div>
+                        <span id="languageText">Babbling sounds</span>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #b3a6ff; margin-bottom: 10px;">Concepts</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="conceptProgress" style="width: 0%;"></div>
+                        </div>
+                        <span id="conceptText">Sensory chaos</span>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #ff6b6b; margin-bottom: 10px;">Planning</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="planningProgress" style="width: 0%;"></div>
+                        </div>
+                        <span id="planningText">Reactive responses</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔮 Why This Could Unlock AGI</h2>
+            <div class="interactive-demo">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px;">
+                    <div class="solution-card" style="border-color: rgba(80, 227, 194, 0.5);">
+                        <h3 style="color: #50e3c2;">✅ Grounded Emergence</h3>
+                        <p>Symbols and concepts emerge from sensorimotor experience, not statistical patterns in text. This solves the symbol grounding problem naturally.</p>
+                    </div>
+                    
+                    <div class="solution-card" style="border-color: rgba(74, 144, 226, 0.5);">
+                        <h3 style="color: #4a90e2;">✅ Compositional Adaptivity</h3>
+                        <p>Modules can self-modify, decompose, and recombine. The system gains evolutionary plasticity to adapt its structure to novel tasks.</p>
+                    </div>
+                    
+                    <div class="solution-card" style="border-color: rgba(179, 166, 255, 0.5);">
+                        <h3 style="color: #b3a6ff;">✅ True Generalization</h3>
+                        <p>By constructing its own abstractions through experience, the system can generalize beyond its training distribution in ways current AI cannot.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🛤️ The Path Forward</h2>
+            <div class="interactive-demo">
+                <p style="font-size: 1.2em; text-align: center; margin-bottom: 30px;">
+                    The solution isn't to abandon modularity entirely, but to build systems that can 
+                    <strong style="color: #50e3c2;">create their own modules</strong> through embodied experience.
+                </p>
+                
+                <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+                    <div style="background: linear-gradient(135deg, rgba(80, 227, 194, 0.2), rgba(74, 144, 226, 0.2)); padding: 30px; border-radius: 15px; max-width: 600px; text-align: center;">
+                        <h3 style="color: #50e3c2; margin-bottom: 15px;">The Key Insight</h3>
+                        <p style="font-size: 1.1em; line-height: 1.6;">
+                            Don't build the modules.<br>
+                            <strong>Build a system that builds and rebuilds its own modules</strong><br>
+                            through embodied experience.
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <p style="font-style: italic; opacity: 0.8;">
+                            This creates recursive, grounded intelligence that could evolve real intuition,<br>
+                            not just statistical mimicry.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Floating particles animation
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Comparison visualization
+        let currentView = 'human';
+        function initializeComparison() {
+            const viz = document.getElementById('comparisonViz');
+            
+            if (currentView === 'human') {
+                viz.innerHTML = `
+                    <div class="node human-node" style="top: 50px; left: 100px;" onclick="showInfo('human-brain')">Brain</div>
+                    <div class="node human-node" style="top: 150px; left: 250px;" onclick="showInfo('human-experience')">Experience</div>
+                    <div class="node human-node" style="top: 100px; left: 400px;" onclick="showInfo('human-embodiment')">Body</div>
+                    <div class="node human-node" style="top: 200px; left: 150px;" onclick="showInfo('human-emotion')">Emotion</div>
+                    <div class="node human-node" style="top: 250px; left: 350px;" onclick="showInfo('human-social')">Social</div>
+                    
+                    <div class="connection" style="top: 80px; left: 160px; width: 90px; transform: rotate(25deg);"></div>
+                    <div class="connection" style="top: 130px; left: 310px; width: 90px; transform: rotate(-25deg);"></div>
+                    <div class="connection" style="top: 180px; left: 200px; width: 100px; transform: rotate(45deg);"></div>
+                `;
+            } else {
+                viz.innerHTML = `
+                    <div class="node ai-node" style="top: 50px; left: 100px;" onclick="showInfo('ai-input')">Input</div>
+                    <div class="node ai-node" style="top: 100px; left: 250px;" onclick="showInfo('ai-layers')">Layers</div>
+                    <div class="node ai-node" style="top: 150px; left: 400px;" onclick="showInfo('ai-attention')">Attention</div>
+                    <div class="node ai-node" style="top: 200px; left: 150px;" onclick="showInfo('ai-output')">Output</div>
+                    <div class="node ai-node" style="top: 250px; left: 350px;" onclick="showInfo('ai-training')">Training</div>
+                    
+                    <div class="connection" style="top: 75px; left: 160px; width: 90px;"></div>
+                    <div class="connection" style="top: 125px; left: 310px; width: 90px;"></div>
+                    <div class="connection" style="top: 175px; left: 200px; width: 100px;"></div>
+                `;
+            }
+        }
+
+        function toggleVisualization() {
+            currentView = currentView === 'human' ? 'ai' : 'human';
+            initializeComparison();
+        }
+
+        function showInfo(type) {
+            const info = {
+                'human-brain': 'Non-modular neural networks with massive recurrent connections',
+                'human-experience': 'Continuous embodied learning through sensorimotor interaction',
+                'human-embodiment': 'Physical body provides grounding for abstract concepts',
+                'human-emotion': 'Emotional valence guides learning and decision-making',
+                'human-social': 'Social interaction shapes language and conceptual development',
+                'ai-input': 'Pre-tokenized discrete input (text, images, etc.)',
+                'ai-layers': 'Fixed modular architecture with defined layer functions',
+                'ai-attention': 'Mechanistic attention patterns across token sequences',
+                'ai-output': 'Probability distributions over predefined vocabularies',
+                'ai-training': 'Batch gradient descent on static datasets'
+            };
+            
+            alert(info[type] || 'Click different nodes to explore!');
+        }
+
+        // Progress simulation
+        let progressInterval;
+        function simulateProgress() {
+            const stages = [
+                { motor: 0, language: 0, concept: 0, planning: 0, 
+                  motorText: 'Random movements', languageText: 'Babbling sounds', 
+                  conceptText: 'Sensory chaos', planningText: 'Reactive responses' },
+                { motor: 25, language: 15, concept: 10, planning: 5,
+                  motorText: 'Basic coordination', languageText: 'Sound patterns',
+                  conceptText: 'Object recognition', planningText: 'Simple goals' },
+                { motor: 60, language: 45, concept: 40, planning: 30,
+                  motorText: 'Skilled movements', languageText: 'Word formation',
+                  conceptText: 'Category formation', planningText: 'Sequential actions' },
+                { motor: 85, language: 75, concept: 70, planning: 65,
+                  motorText: 'Complex skills', languageText: 'Grammar emergence',
+                  conceptText: 'Abstract thinking', planningText: 'Strategic planning' },
+                { motor: 95, language: 90, concept: 85, planning: 80,
+                  motorText: 'Expert control', languageText: 'Fluent communication',
+                  conceptText: 'Metacognition', planningText: 'Long-term planning' }
+            ];
+            
+            let currentStage = 0;
+            progressInterval = setInterval(() => {
+                if (currentStage < stages.length) {
+                    const stage = stages[currentStage];
+                    document.getElementById('motorProgress').style.width = stage.motor + '%';
+                    document.getElementById('languageProgress').style.width = stage.language + '%';
+                    document.getElementById('conceptProgress').style.width = stage.concept + '%';
+                    document.getElementById('planningProgress').style.width = stage.planning + '%';
+                    
+                    document.getElementById('motorText').textContent = stage.motorText;
+                    document.getElementById('languageText').textContent = stage.languageText;
+                    document.getElementById('conceptText').textContent = stage.conceptText;
+                    document.getElementById('planningText').textContent = stage.planningText;
+                    
+                    currentStage++;
+                } else {
+                    clearInterval(progressInterval);
+                }
+            }, 1500);
+        }
+
+        function resetProgress() {
+            clearInterval(progressInterval);
+            document.getElementById('motorProgress').style.width = '0%';
+            document.getElementById('languageProgress').style.width = '0%';
+            document.getElementById('conceptProgress').style.width = '0%';
+            document.getElementById('planningProgress').style.width = '0%';
+            
+            document.getElementById('motorText').textContent = 'Random movements';
+            document.getElementById('languageText').textContent = 'Babbling sounds';
+            document.getElementById('conceptText').textContent = 'Sensory chaos';
+            document.getElementById('planningText').textContent = 'Reactive responses';
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            initializeComparison();
+            
+            // Add smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Add intersection observer for animations
+            const sections = document.querySelectorAll('.section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        });
+        
+        // Add dynamic neural pathway generation
+        function generateNeuralPaths() {
+            const brainViz = document.getElementById('brainViz');
+            setInterval(() => {
+                const pathway = document.createElement('div');
+                pathway.className = 'neural-pathway';
+                pathway.style.left = Math.random() * 80 + 10 + '%';
+                pathway.style.animationDelay = '0s';
+                pathway.style.top = Math.random() * 200 + 50 + 'px';
+                pathway.style.transform = `rotate(${Math.random() * 360}deg)`;
+                brainViz.appendChild(pathway);
+                
+                setTimeout(() => pathway.remove(), 3000);
+            }, 800);
+        }
+        
+        // Start neural animation
+        setTimeout(generateNeuralPaths, 1000);
+    </script>
+</body>
+</html>
